@@ -1,0 +1,118 @@
+Setup and Configuration Guide
+This guide provides detailed instructions for setting up and running the Email Marketing Analysis project.
+Environment Setup
+Python Installation
+
+If you don't have Python installed, download and install Python 3.8+ from python.org
+Verify your installation by running:
+python --version
+
+
+Setting Up a Virtual Environment (Recommended)
+Creating a virtual environment helps isolate project dependencies:
+bash# On Windows
+python -m venv venv
+venv\Scripts\activate
+
+# On macOS/Linux
+python -m venv venv
+source venv/bin/activate
+Installing Dependencies
+Install all required packages:
+bashpip install pandas numpy matplotlib seaborn scikit-learn
+Or use the provided requirements file:
+bashpip install -r requirements.txt
+Data Preparation
+Required Data Files
+Ensure you have these three CSV files in your project directory:
+
+email_table.csv - Should contain these columns:
+
+email_id: Unique identifier for each email
+email_text: Type of email content (e.g., "short", "long")
+email_version: Email personalization level (e.g., "personalized", "generic")
+hour: Hour when the email was sent (0-23)
+weekday: Day of the week when the email was sent
+user_country: Recipient's country
+user_past_purchases: Number of past purchases made by the recipient
+
+
+email_opened_table.csv - Should contain:
+
+email_id: ID of emails that were opened
+
+
+link_clicked_table.csv - Should contain:
+
+email_id: ID of emails whose links were clicked
+
+
+
+Data Format Example
+email_table.csv:
+email_id,email_text,email_version,hour,weekday,user_country,user_past_purchases
+1,short,personalized,9,Monday,USA,2
+2,long,generic,15,Tuesday,Canada,0
+...
+email_opened_table.csv:
+email_id
+1
+3
+...
+link_clicked_table.csv:
+email_id
+1
+...
+Running the Analysis
+Basic Execution
+To run the complete analysis:
+bashpython email_analysis.py
+Output Files
+The script generates several visualization files:
+
+feature_importance.png: Shows which factors best predict email clicks
+ctr_improvement.png: Shows expected improvement from targeted sends
+segment_patterns.png: Shows engagement patterns across different segments
+
+Troubleshooting
+Common Issues and Solutions
+
+ImportError: Module not found
+
+Make sure you've installed all required packages: pip install pandas numpy matplotlib seaborn scikit-learn
+
+
+FileNotFoundError: No such file or directory
+
+Ensure your CSV files are in the same directory as the script or provide the full path
+
+
+MemoryError
+
+If your dataset is very large, try using a machine with more RAM or implement chunking in the code
+
+
+Circular Import Error
+
+Don't name your script the same as built-in Python modules (e.g., avoid naming it email.py)
+
+
+Visualization Issues
+
+If visualizations don't display properly, try using a different backend: matplotlib.use('Agg')
+
+
+
+Customizing the Analysis
+Modifying Feature Selection
+To change which features are used for prediction, edit the categorical_features and numeric_features lists:
+pythoncategorical_features = ['email_text', 'email_version', 'weekday', 'user_country']
+numeric_features = ['hour', 'user_past_purchases']
+Adjusting Model Parameters
+To tune the Random Forest model, modify the parameters:
+pythonRandomForestClassifier(n_estimators=100, random_state=42, max_depth=10)
+Adding New Visualizations
+To create additional visualizations, add new plotting code at the end of the script:
+pythonplt.figure(figsize=(10, 6))
+# Your custom visualization code here
+plt.savefig('custom_visualization.png')
